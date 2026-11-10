@@ -11,9 +11,12 @@ __pycache__/
 # Node
 node_modules/
 frontend/node_modules/
-demo_recorder/node_modules/
-demo_recorder/video_output/
-demo_recorder/intro_video_output/
+# Video and demo recordings
+*.webm
+*.mp4
+demo_recorder/
+intro_animation.html
+play_video.html
 
 # Build artifacts
 frontend/dist/
