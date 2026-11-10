@@ -16,6 +16,7 @@ def find_ffmpeg() -> str | None:
         return found
     # Check common Windows paths
     candidates = [
+        str(Path.home() / "AppData" / "Local" / "ms-playwright" / "ffmpeg-1013" / "ffmpeg-win64.exe"),
         "C:\\ffmpeg\\bin\\ffmpeg.exe",
         "C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe",
         str(Path.home() / "AppData" / "Local" / "Microsoft" / "WinGet" / "Packages"),
