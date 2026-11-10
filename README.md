@@ -27,12 +27,24 @@ Millions of Indian Kirana (neighbourhood grocery) owners track customer credit (
 | **Speech STT** | Gnani Prisma v3.0 (`/stt/v3`) | With domain keyterms boosting (customer names and shop items) |
 | **Speech TTS** | Gnani Timbre v3.0 (`/api/v1/tts/inference`) | Stock voice `Shivani` for clear Hindi and regional readouts |
 | **Voice Cloning** | Gnani VC-v1 (`/api/v1/tts/voice-clone/embeddings`) | Enrolls 10–15s shopkeeper reference speech into a 768-dim embedding |
-| **NLU / LLM** | Anthropic Claude via SDK + Rule-based fallback | Structured intent & entity extraction via forced tool use |
-| **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS | Mobile-first UI, Web Audio API 16 kHz mono WAV encoding |
+| **NLU / LLM** | Google Gemini (`gemini-2.5-flash`) via `google-genai` + Anthropic fallback + Rule fallback | Structured intent & entity extraction via schema enforcement (LLM never computes ledger arithmetic) |
+| **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS | Mobile-first UI, Web Audio API 16 kHz mono WAV encoding, PWA ready |
 
 ---
 
-## 3. Project Structure
+## 3. Demo Video, Voiceover & Pitch Assets
+
+| Asset | File | Description |
+| --- | --- | --- |
+| 🎬 **Demo Video** | [`BolKhata_Demo_Video.webm`](file:///d:/Gnani/BolKhata_Demo_Video.webm) | Full 1m 45s recorded mobile walkthrough covering all 6 scenes |
+| 🌐 **Interactive Video Player** | [`play_video.html`](file:///d:/Gnani/play_video.html) | Native browser video player with scene jump buttons (opens in Chrome/Edge) |
+| 🎙️ **ElevenLabs Voiceover Script** | [`ELEVENLABS_VOICEOVER_SCRIPT.md`](file:///d:/Gnani/ELEVENLABS_VOICEOVER_SCRIPT.md) | Synchronized voiceover script with recommended ElevenLabs voice settings and copy-paste text |
+| 📄 **1-Page Solution Pitch** | [`SOLUTION_PITCH.md`](file:///d:/Gnani/SOLUTION_PITCH.md) | High-impact 1-page executive pitch explaining the Kirana problem, voice loops, and metrics |
+| 📋 **Demo Guide** | [`DEMO_GUIDE.md`](file:///d:/Gnani/DEMO_GUIDE.md) | Complete 2–3 minute live or recorded demonstration playbook |
+
+---
+
+## 4. Project Structure
 
 ```text
 bolkhata/
@@ -83,8 +95,9 @@ Create `.env` in the root directory (or copy from `.env.example`):
 cp .env.example .env
 ```
 Key configuration:
+- `GEMINI_API_KEY`: Google Gemini API key for `gemini-2.5-flash` NLU extraction and reminder drafting.
 - `GNANI_API_KEY`: Your key from [app.gnani.ai/voice](https://app.gnani.ai/voice).
-- `ANTHROPIC_API_KEY`: Anthropic Claude API key for LLM NLU (falls back gracefully to built-in rules if omitted).
+- `ANTHROPIC_API_KEY`: (Optional) Anthropic Claude fallback.
 - `DEMO_FALLBACK`: Set to `true` to ensure full demo availability even without live speech credits.
 
 ### Step 2: Backend Setup
