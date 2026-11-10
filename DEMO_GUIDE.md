@@ -117,3 +117,4 @@ This guide provides a **second-by-second script**, **exact spoken words**, and *
 1. **Noisy room or microphone trouble?**
    Inside the Voice Modal, there are 4 **1-click quick demo chips** (`🗣️ शर्मा जी...`, `🔍 वर्मा जी...`, `💵 रमेश...`, `⚠️ किसका पैसा...`). You can simply tap them during the demo—they trigger the exact same end-to-end NLU, Confirm Card, and TTS speech flows without recording jitter!
 2. **Audio Output**: Make sure your screen recorder (e.g. OBS, Loom, QuickTime) captures **system audio** so the judges hear the Gnani TTS and cloned voice playback clearly!
+

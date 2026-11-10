@@ -172,3 +172,4 @@ export const ShopSettingsModal: React.FC<ShopSettingsModalProps> = ({
     </div>
   );
 };
+
