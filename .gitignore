@@ -1,0 +1,26 @@
+# Virtual environment
+.venv/
+backend/.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Build artifacts
+frontend/dist/
+
+# SQLite & Data
+data/*.db
+data/audio/*
+!data/audio/.gitkeep
+data/*.json
+
+# Environment
+.env
+backend/.env
