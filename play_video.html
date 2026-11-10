@@ -151,7 +151,7 @@
 
   <div class="video-switch-tabs">
     <button class="tab-btn active" id="tabIntro" onclick="switchVideo('intro')">
-      <span>✨</span> 23s Illustrative Intro (1080p)
+      <span>✨</span> 23s Illustrative Intro (420x900)
     </button>
     <button class="tab-btn" id="tabDemo" onclick="switchVideo('demo')">
       <span>📱</span> 1m 45s Full App Walkthrough (Demo)
@@ -160,7 +160,7 @@
 
   <div class="container">
     <div class="video-card">
-      <video id="player" class="widescreen" controls autoplay playsinline preload="auto">
+      <video id="player" class="portrait" controls autoplay playsinline preload="auto">
         <source id="videoSrc" src="BolKhata_Intro_23s.webm" type="video/webm">
         Your browser does not support HTML5 video.
       </video>
@@ -249,7 +249,7 @@
       if (type === 'intro') {
         tabIntro.classList.add('active');
         tabDemo.classList.remove('active');
-        player.className = 'widescreen';
+        player.className = 'portrait';
         sidebarIntro.style.display = 'block';
         sidebarDemo.style.display = 'none';
         player.src = 'BolKhata_Intro_23s.webm';

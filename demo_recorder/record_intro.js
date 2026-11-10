@@ -18,7 +18,7 @@ async function run() {
   }
   fs.mkdirSync(VIDEO_DIR, { recursive: true });
 
-  console.log('--- STEP 2: Launching Chrome for 1080p 16:9 Recording ---');
+  console.log('--- STEP 2: Launching Chrome for 420x900 Mobile Recording ---');
   const browser = await chromium.launch({
     executablePath: CHROME_PATH,
     headless: true,
@@ -26,11 +26,13 @@ async function run() {
   });
 
   const context = await browser.newContext({
-    viewport: { width: 1920, height: 1080 },
-    deviceScaleFactor: 1,
+    viewport: { width: 420, height: 900 },
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
     recordVideo: {
       dir: VIDEO_DIR,
-      size: { width: 1920, height: 1080 }
+      size: { width: 420, height: 900 }
     }
   });
 
