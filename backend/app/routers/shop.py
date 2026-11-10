@@ -47,3 +47,4 @@ def update_shop(update: ShopUpdate, session: Session = Depends(get_session)):
         language=shop.language,
         voice_clone_enrolled=shop.voice_clone_enrolled
     )
+

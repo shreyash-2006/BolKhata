@@ -123,3 +123,4 @@ class VoiceEnrollResponse(BaseModel):
     success: bool
     enrolled: bool
     message: str
+

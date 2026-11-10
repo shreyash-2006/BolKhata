@@ -13,3 +13,4 @@ def test_static_and_api():
     res_api = client.get("/api/ledger/summary")
     assert res_api.status_code == 200
     assert "total_udhaar" in res_api.json()
+

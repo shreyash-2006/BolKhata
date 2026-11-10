@@ -237,3 +237,4 @@ def undo_last_entry(session: Session = Depends(get_session)):
         transcript=last_entry.transcript,
         created_at=last_entry.created_at
     )
+

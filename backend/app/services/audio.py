@@ -99,3 +99,4 @@ def save_audio(data: bytes, prefix: str = "audio", ext: str = "wav") -> str:
 
 def get_audio_path(filename: str) -> Path:
     return settings.resolved_audio_dir / filename
+

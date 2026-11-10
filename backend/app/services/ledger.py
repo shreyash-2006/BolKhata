@@ -124,3 +124,4 @@ def resolve_relative_date(hint: Optional[str], today_str: Optional[str] = None) 
         return (curr + timedelta(days=days)).strftime("%Y-%m-%d")
 
     return None
+

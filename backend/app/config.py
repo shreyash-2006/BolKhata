@@ -9,8 +9,9 @@ class Settings(BaseSettings):
     gnani_api_key: str = ""
     gnani_base_url: str = "https://api.vachana.ai"
     gnani_max_concurrency: int = 1
+    gemini_api_key: str = ""
     anthropic_api_key: str = ""
-    llm_model: str = "claude-sonnet-5-5"
+    llm_model: str = "gemini-2.5-flash"
     timezone: str = "Asia/Kolkata"
     fake_today: Optional[str] = None
     database_url: str = "sqlite:///./data/bolkhata.db"

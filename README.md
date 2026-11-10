@@ -156,3 +156,4 @@ Runs the Phase 0 spike testing STT, TTS, round-trip audio, concurrency, voice cl
 2. **Demo Quick Utterance Chips**: 1-click test chips are integrated into the voice modal for instant 2-minute hackathon demonstrations without requiring microphone permissions.
 3. **Single Process Serving**: FastAPI mounts `frontend/dist` as static assets and serves `index.html` on SPA routes, eliminating CORS concerns and simplifying deployment.
 4. **Resilient Fallback Mode**: When `DEMO_FALLBACK=true`, the app functions end-to-end even in offline or missing-key scenarios using realistic mock speech fixtures and procedural audio synthesis.
+

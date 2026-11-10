@@ -24,3 +24,4 @@ data/*.json
 # Environment
 .env
 backend/.env
+

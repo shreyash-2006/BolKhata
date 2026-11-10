@@ -25,3 +25,4 @@ def get_fallback_embedding() -> dict:
         "shape": [1, 768],
         "dtype": "torch.bfloat16"
     }
+

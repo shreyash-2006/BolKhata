@@ -187,3 +187,4 @@ async def enroll_voice_clone(
     except Exception as e:
         logger.exception("Voice clone enrollment error")
         raise HTTPException(status_code=500, detail=str(e))
+

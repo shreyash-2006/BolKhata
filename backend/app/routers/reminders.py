@@ -62,3 +62,4 @@ def get_reminders_history(customer_id: int, session: Session = Depends(get_sessi
         select(Reminder).where(Reminder.customer_id == customer_id).order_by(desc(Reminder.id))
     ).all()
     return rems
+

@@ -63,3 +63,4 @@ else:
             "docs": "/docs",
             "frontend": "Run 'npm run build' in frontend/ to serve the SPA from FastAPI, or 'npm run dev' on :5173"
         }
+

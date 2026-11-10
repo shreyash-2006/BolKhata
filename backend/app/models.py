@@ -49,3 +49,4 @@ class Reminder(SQLModel, table=True):
     voice_type: str = Field(default="stock")  # 'cloned' or 'stock'
     language: str = Field(default="hi-IN")
     created_at: datetime = Field(default_factory=get_utc_now)
+

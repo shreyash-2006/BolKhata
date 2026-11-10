@@ -10,3 +10,4 @@ async def stream_audio(filename: str):
     if not path.exists() or not path.is_file():
         raise HTTPException(status_code=404, detail="Audio file not found")
     return FileResponse(path, media_type="audio/wav")
+
