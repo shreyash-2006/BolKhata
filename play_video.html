@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BolKhata — Demo Video Player</title>
+  <title>BolKhata — Video Showcase & Player</title>
   <style>
     body {
       margin: 0;
       padding: 24px;
-      background: #0f172a;
+      background: #0b0f19;
       color: #f8fafc;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
@@ -19,51 +19,90 @@
     }
     h1 {
       margin: 0 0 6px 0;
-      font-size: 22px;
+      font-size: 24px;
       color: #fb923c;
     }
     p.sub {
-      margin: 0 0 20px 0;
+      margin: 0 0 16px 0;
       color: #94a3b8;
       font-size: 14px;
+    }
+    .video-switch-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover {
+      background: #334155;
+      color: white;
+    }
+    .tab-btn.active {
+      background: #ea580c;
+      border-color: #ea580c;
+      color: white;
+      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.4);
     }
     .container {
       display: flex;
       gap: 28px;
-      max-width: 960px;
+      max-width: 1100px;
       width: 100%;
       align-items: flex-start;
       justify-content: center;
       flex-wrap: wrap;
     }
     .video-card {
-      background: #1e293b;
+      background: #151d2f;
       padding: 12px;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      border: 1px solid #334155;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border: 1px solid #23304a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     video {
       display: block;
-      width: 380px;
-      height: auto;
-      border-radius: 16px;
+      border-radius: 14px;
       background: #000;
+      transition: all 0.3s ease;
+    }
+    video.widescreen {
+      width: 640px;
+      height: 360px;
+    }
+    video.portrait {
+      width: 360px;
+      height: 720px;
     }
     .sidebar {
       flex: 1;
       min-width: 320px;
-      max-width: 440px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 18px;
+      max-width: 400px;
+      background: #151d2f;
+      border: 1px solid #23304a;
+      border-radius: 18px;
+      padding: 20px;
     }
     .sidebar h2 {
       margin: 0 0 14px 0;
       font-size: 16px;
       color: #f1f5f9;
-      border-bottom: 1px solid #334155;
+      border-bottom: 1px solid #23304a;
       padding-bottom: 8px;
     }
     .scene-btn {
@@ -72,9 +111,9 @@
       justify-content: space-between;
       width: 100%;
       text-align: left;
-      background: #0f172a;
+      background: #0c121e;
       color: #e2e8f0;
-      border: 1px solid #334155;
+      border: 1px solid #23304a;
       padding: 10px 14px;
       border-radius: 10px;
       margin-bottom: 8px;
@@ -94,34 +133,80 @@
       font-family: monospace;
       font-size: 12px;
     }
-    .tip-box {
+    .script-box {
       margin-top: 16px;
-      background: rgba(234, 88, 12, 0.1);
-      border: 1px solid rgba(234, 88, 12, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #23304a;
       border-radius: 10px;
       padding: 12px;
       font-size: 12px;
       line-height: 1.5;
-      color: #fdba74;
+      color: #cbd5e1;
     }
   </style>
 </head>
 <body>
-  <h1>BolKhata — Walkthrough Demo Video</h1>
-  <p class="sub">Duration: 1m 45s &bull; Resolution: 840 x 1800 &bull; Ambient Voice-First Udhaar Ledger</p>
+  <h1>BolKhata — Video Showcase & Player</h1>
+  <p class="sub">Ambient Voice-First Udhaar Ledger &bull; Kirana Credit Revolution</p>
+
+  <div class="video-switch-tabs">
+    <button class="tab-btn active" id="tabIntro" onclick="switchVideo('intro')">
+      <span>✨</span> 23s Illustrative Intro (1080p)
+    </button>
+    <button class="tab-btn" id="tabDemo" onclick="switchVideo('demo')">
+      <span>📱</span> 1m 45s Full App Walkthrough (Demo)
+    </button>
+  </div>
 
   <div class="container">
     <div class="video-card">
-      <video id="demoVideo" controls autoplay playsinline preload="auto">
-        <source src="BolKhata_Demo_Video.webm" type="video/webm">
-        Your browser does not support the video tag.
+      <video id="player" class="widescreen" controls autoplay playsinline preload="auto">
+        <source id="videoSrc" src="BolKhata_Intro_23s.webm" type="video/webm">
+        Your browser does not support HTML5 video.
       </video>
     </div>
 
-    <div class="sidebar">
-      <h2>Jump to Scene</h2>
+    <div class="sidebar" id="sidebarIntro">
+      <h2>23s Script Beats</h2>
       <button class="scene-btn" onclick="jumpTo(0)">
-        <span>1. Kirana Context & Dashboard</span>
+        <span>1. 13M Kirana Stores</span>
+        <span class="time-badge">0:00</span>
+      </button>
+      <button class="scene-btn" onclick="jumpTo(4.5)">
+        <span>2. 90% Market Dominance</span>
+        <span class="time-badge">0:04</span>
+      </button>
+      <button class="scene-btn" onclick="jumpTo(8.5)">
+        <span>3. 60%+ Informal Credit (Udhaar)</span>
+        <span class="time-badge">0:08</span>
+      </button>
+      <button class="scene-btn" onclick="jumpTo(12)">
+        <span>4. Notebooks are slow in crowds</span>
+        <span class="time-badge">0:12</span>
+      </button>
+      <button class="scene-btn" onclick="jumpTo(15)">
+        <span>5. Math causes revenue leaks</span>
+        <span class="time-badge">0:15</span>
+      </button>
+      <button class="scene-btn" onclick="jumpTo(17.5)">
+        <span>6. Awkward debt collection</span>
+        <span class="time-badge">0:17</span>
+      </button>
+      <button class="scene-btn" onclick="jumpTo(19.5)">
+        <span>7. Enter BolKhata</span>
+        <span class="time-badge">0:19</span>
+      </button>
+
+      <div class="script-box">
+        <strong>Voiceover Line:</strong><br>
+        <em>"Over thirteen million neighbourhood Kirana stores power ninety percent of India’s grocery retail... And over sixty percent of their business runs on informal credit — known locally as udhaar. But when a shop gets crowded, writing in paper notebooks is slow... notebook math causes revenue leaks... and asking regular customers for money is socially awkward."</em>
+      </div>
+    </div>
+
+    <div class="sidebar" id="sidebarDemo" style="display: none;">
+      <h2>Walkthrough Scenes</h2>
+      <button class="scene-btn" onclick="jumpTo(0)">
+        <span>1. Dashboard & KPIs</span>
         <span class="time-badge">0:00</span>
       </button>
       <button class="scene-btn" onclick="jumpTo(15)">
@@ -137,7 +222,7 @@
         <span class="time-badge">0:54</span>
       </button>
       <button class="scene-btn" onclick="jumpTo(72)">
-        <span>5. Loop C: Remind in Cloned Voice</span>
+        <span>5. Loop C: Cloned Voice WhatsApp</span>
         <span class="time-badge">1:12</span>
       </button>
       <button class="scene-btn" onclick="jumpTo(93)">
@@ -145,20 +230,45 @@
         <span class="time-badge">1:33</span>
       </button>
 
-      <div class="tip-box">
-        <strong>💡 Playback Note:</strong><br>
-        WebM videos use VP9 encoding which plays best inside <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>. Windows Media Player often struggles with WebM files without Microsoft VP9 extensions.
+      <div class="script-box">
+        <strong>Walkthrough Focus:</strong><br>
+        Demonstrates the live Kirana web app with zero typing, deterministic Python math, and voice cloning in Hindi, Marathi, and English.
       </div>
     </div>
   </div>
 
   <script>
-    const vid = document.getElementById('demoVideo');
+    const player = document.getElementById('player');
+    const videoSrc = document.getElementById('videoSrc');
+    const tabIntro = document.getElementById('tabIntro');
+    const tabDemo = document.getElementById('tabDemo');
+    const sidebarIntro = document.getElementById('sidebarIntro');
+    const sidebarDemo = document.getElementById('sidebarDemo');
+
+    function switchVideo(type) {
+      if (type === 'intro') {
+        tabIntro.classList.add('active');
+        tabDemo.classList.remove('active');
+        player.className = 'widescreen';
+        sidebarIntro.style.display = 'block';
+        sidebarDemo.style.display = 'none';
+        player.src = 'BolKhata_Intro_23s.webm';
+      } else {
+        tabDemo.classList.add('active');
+        tabIntro.classList.remove('active');
+        player.className = 'portrait';
+        sidebarIntro.style.display = 'none';
+        sidebarDemo.style.display = 'block';
+        player.src = 'BolKhata_Demo_Video.webm';
+      }
+      player.load();
+      player.play().catch(() => {});
+    }
+
     function jumpTo(sec) {
-      vid.currentTime = sec;
-      vid.play();
+      player.currentTime = sec;
+      player.play();
     }
   </script>
 </body>
 </html>
-

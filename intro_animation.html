@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BolKhata — 23s Illustrative Intro Animation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #090d16;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Ambient background glowing orbs */
+    .ambient-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.35;
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #f97316 0%, transparent 70%);
+      top: -150px;
+      left: -150px;
+    }
+
+    .orb-2 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #10b981 0%, transparent 70%);
+      bottom: -150px;
+      right: -100px;
+    }
+
+    .orb-3 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #ef4444 0%, transparent 70%);
+      top: 30%;
+      left: 60%;
+      opacity: 0;
+    }
+
+    /* Subtle grid overlay */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Main Container */
+    #stage {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1200px;
+      height: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    /* Timeline Scenes */
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.94) translateY(20px);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      padding: 20px 40px;
+    }
+
+    .scene.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    .scene.exit {
+      opacity: 0;
+      transform: scale(1.05) translateY(-20px);
+    }
+
+    /* Badges */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .pill-orange {
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.4);
+      color: #fb923c;
+    }
+
+    .pill-red {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .pill-green {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    /* Typography */
+    .hero-stat {
+      font-size: 88px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 30%, #fb923c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-stat.red-grad {
+      background: linear-gradient(135deg, #ffffff 30%, #f87171 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-stat.green-grad {
+      background: linear-gradient(135deg, #ffffff 30%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .scene-title {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.25;
+      max-width: 860px;
+      margin-bottom: 20px;
+      color: #f1f5f9;
+      letter-spacing: -0.5px;
+    }
+
+    .scene-desc {
+      font-size: 20px;
+      color: #94a3b8;
+      max-width: 740px;
+      line-height: 1.5;
+    }
+
+    /* Visual elements */
+    .visual-wrapper {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    /* Store SVG Illustration */
+    .kirana-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .store-icon-box {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.4);
+    }
+
+    /* Comparison Bar Chart */
+    .bar-chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 580px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px 28px;
+      margin-top: 24px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .bar-label {
+      width: 160px;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 28px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill-90 {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ea580c, #f97316);
+      border-radius: 14px;
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      font-weight: 800;
+      font-size: 13px;
+      color: white;
+    }
+
+    .bar-fill-10 {
+      height: 100%;
+      width: 0%;
+      background: #475569;
+      border-radius: 14px;
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      font-weight: 700;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* Problem Grid in Scene 2 */
+    .problem-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 960px;
+      width: 100%;
+      margin-top: 28px;
+    }
+
+    .problem-box {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 20px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1);
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .problem-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .problem-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .problem-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fca5a5;
+      margin-bottom: 8px;
+    }
+
+    .problem-text {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+
+    /* Climax Callout */
+    .climax-box {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(16, 185, 129, 0.2));
+      border: 2px solid rgba(249, 115, 22, 0.6);
+      border-radius: 24px;
+      padding: 32px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 0 60px rgba(249, 115, 22, 0.3);
+    }
+
+    .soundwave {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 48px;
+    }
+
+    .bar {
+      width: 6px;
+      background: #fb923c;
+      border-radius: 3px;
+      animation: wave 1s ease-in-out infinite alternate;
+    }
+
+    .bar:nth-child(1) { height: 16px; animation-delay: 0.1s; }
+    .bar:nth-child(2) { height: 28px; animation-delay: 0.3s; }
+    .bar:nth-child(3) { height: 44px; animation-delay: 0.2s; }
+    .bar:nth-child(4) { height: 32px; animation-delay: 0.4s; }
+    .bar:nth-child(5) { height: 48px; animation-delay: 0.15s; }
+    .bar:nth-child(6) { height: 30px; animation-delay: 0.35s; }
+    .bar:nth-child(7) { height: 18px; animation-delay: 0.25s; }
+
+    @keyframes wave {
+      0% { transform: scaleY(0.4); opacity: 0.6; }
+      100% { transform: scaleY(1.1); opacity: 1; }
+    }
+
+    /* Subtitle Karaoke Bar at bottom */
+    #subtitle-container {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 900px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      padding: 16px 28px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 50;
+    }
+
+    #caption-text {
+      flex: 1;
+      font-size: 16px;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    #caption-text span.highlight {
+      color: #fb923c;
+      font-weight: 800;
+    }
+
+    #time-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: #94a3b8;
+    }
+
+    /* Bottom Progress Bar */
+    #progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.06);
+      z-index: 100;
+    }
+
+    #progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ea580c, #f97316, #10b981);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient glowing lighting -->
+  <div class="ambient-bg">
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+    <div class="orb orb-3" id="orb3"></div>
+  </div>
+
+  <div class="grid-overlay"></div>
+
+  <!-- Main Animation Stage -->
+  <div id="stage">
+
+    <!-- ==============================================
+         SCENE 1: 13 Million Stores (0.0s - 4.5s)
+         ============================================== -->
+    <div class="scene" id="scene1">
+      <div class="pill-badge pill-orange">
+        <span>🇮🇳</span> Bharat's Retail Engine
+      </div>
+      <div class="hero-stat" id="stat-13m">13,000,000+</div>
+      <div class="scene-title">Neighbourhood Kirana Stores</div>
+      <div class="scene-desc">Powering the daily lives of 1.4 billion people across every corner of India</div>
+      
+      <div class="visual-wrapper">
+        <div class="kirana-card">
+          <div class="store-icon-box">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/>
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+              <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/>
+              <path d="M2 7h20"/>
+            </svg>
+          </div>
+          <div style="text-align: left;">
+            <div style="font-weight: 800; font-size: 18px; color: #f8fafc;">Local Kiranas</div>
+            <div style="font-size: 14px; color: #fb923c; font-weight: 600;">90% of India's Grocery Retail</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         SCENE 2: 90% Market Dominance (4.5s - 8.5s)
+         ============================================== -->
+    <div class="scene" id="scene2">
+      <div class="pill-badge pill-green">
+        <span>📊</span> Unrivalled Market Dominance
+      </div>
+      <div class="hero-stat green-grad">90%</div>
+      <div class="scene-title">Of India's Entire Grocery Retail</div>
+      
+      <div class="bar-chart-container">
+        <div class="bar-row">
+          <div class="bar-label">Kirana Stores</div>
+          <div class="bar-track">
+            <div class="bar-fill-90" id="barKirana">90%</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color: #64748b;">Supermarkets & Apps</div>
+          <div class="bar-track">
+            <div class="bar-fill-10" id="barModern">10%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         SCENE 3: 60%+ Informal Credit / Udhaar (8.5s - 12.0s)
+         ============================================== -->
+    <div class="scene" id="scene3">
+      <div class="pill-badge pill-orange">
+        <span>🤝</span> The Currency of Trust
+      </div>
+      <div class="hero-stat">60%+</div>
+      <div class="scene-title">Of All Sales Run on Informal Credit (उधार)</div>
+      <div class="scene-desc">Generations of customer loyalty powered by unwritten trust and flexible repayment</div>
+      
+      <div class="visual-wrapper" style="margin-top: 24px;">
+        <div class="kirana-card" style="border-color: rgba(249, 115, 22, 0.4);">
+          <span style="font-size: 32px;">📖</span>
+          <div style="text-align: left;">
+            <div style="font-weight: 800; font-size: 17px; color: #f8fafc;">Traditional Bahi-Khata</div>
+            <div style="font-size: 13px; color: #94a3b8;">Manual paper logs keeping track of millions of rupees</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         SCENE 4: The 3 Core Breaking Points (12.0s - 19.5s)
+         ============================================== -->
+    <div class="scene" id="scene4">
+      <div class="pill-badge pill-red">
+        <span>⚠️</span> The Paper Notebook Crisis
+      </div>
+      <div class="scene-title" style="font-size: 34px; margin-bottom: 8px;">
+        When The Shop Gets Crowded, Paper Fails
+      </div>
+      <div class="scene-desc" style="font-size: 17px;">Manual methods create friction, leak cash, and strain relationships</div>
+
+      <div class="problem-cards">
+        <!-- Problem 1 -->
+        <div class="problem-box" id="prob1">
+          <div class="problem-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+              <path d="m15 5 3 3"/>
+            </svg>
+          </div>
+          <div class="problem-title">Slow in Rush Hours</div>
+          <div class="problem-text">Paper notes are slow and chaotic when queues form at the counter.</div>
+        </div>
+
+        <!-- Problem 2 -->
+        <div class="problem-box" id="prob2">
+          <div class="problem-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20"/>
+              <path d="m17 5-5-3-5 3"/>
+              <path d="M17 19l-5 3-5-3"/>
+              <circle cx="12" cy="12" r="4"/>
+            </svg>
+          </div>
+          <div class="problem-title">Revenue Leaks</div>
+          <div class="problem-text">Mental math slips and forgotten entries lead to permanent loss.</div>
+        </div>
+
+        <!-- Problem 3 -->
+        <div class="problem-box" id="prob3">
+          <div class="problem-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <path d="M8 10h.01"/>
+              <path d="M12 10h.01"/>
+              <path d="M16 10h.01"/>
+            </svg>
+          </div>
+          <div class="problem-title">Social Friction</div>
+          <div class="problem-text">Asking regular customers for money is awkward and risks loyalty.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         SCENE 5: The BolKhata Solution Climax (19.5s - 23.0s)
+         ============================================== -->
+    <div class="scene" id="scene5">
+      <div class="climax-box">
+        <div class="pill-badge pill-orange" style="margin-bottom: 0;">
+          <span>🎙️</span> The Ambient Voice Revolution
+        </div>
+        
+        <div class="soundwave">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+
+        <div style="font-size: 46px; font-weight: 900; letter-spacing: -1px; color: #fff;">
+          Enter <span style="color: #fb923c;">बोलखाता</span> (BolKhata)
+        </div>
+        <div style="font-size: 19px; color: #cbd5e1; font-weight: 600;">
+          Zero typing. Zero math errors. Polite voice recovery.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Captions & Karaoke Sync Bar -->
+  <div id="subtitle-container">
+    <div style="font-size: 20px;">🎙️</div>
+    <div id="caption-text">
+      Over <span class="highlight">thirteen million</span> neighbourhood Kirana stores power ninety percent of India’s grocery retail...
+    </div>
+    <div id="time-pill">00:00</div>
+  </div>
+
+  <!-- Progress bar -->
+  <div id="progress-track">
+    <div id="progress-fill"></div>
+  </div>
+
+  <script>
+    // 23-second exact choreography timeline
+    const TOTAL_DURATION = 23.0;
+    const startTime = performance.now();
+
+    const scriptTracks = [
+      {
+        start: 0.0,
+        end: 4.5,
+        scene: 1,
+        text: 'Over <span class="highlight">thirteen million</span> neighbourhood Kirana stores power ninety percent of India’s grocery retail...',
+        bg: { orb1: 0.45, orb2: 0.2, orb3: 0 }
+      },
+      {
+        start: 4.5,
+        end: 8.5,
+        scene: 2,
+        text: '...powering <span class="highlight">ninety percent</span> of India’s entire grocery retail ecosystem...',
+        bg: { orb1: 0.2, orb2: 0.5, orb3: 0 }
+      },
+      {
+        start: 8.5,
+        end: 12.0,
+        scene: 3,
+        text: 'And over <span class="highlight">sixty percent</span> of their business runs on informal credit — known locally as <span class="highlight">udhaar</span>.',
+        bg: { orb1: 0.4, orb2: 0.2, orb3: 0 }
+      },
+      {
+        start: 12.0,
+        end: 15.0,
+        scene: 4,
+        probStep: 1,
+        text: 'But when a shop gets crowded, <span class="highlight" style="color: #f87171;">writing in paper notebooks is slow</span>...',
+        bg: { orb1: 0.1, orb2: 0.1, orb3: 0.4 }
+      },
+      {
+        start: 15.0,
+        end: 17.5,
+        scene: 4,
+        probStep: 2,
+        text: '...notebook math causes <span class="highlight" style="color: #f87171;">revenue leaks</span>...',
+        bg: { orb1: 0.1, orb2: 0.1, orb3: 0.5 }
+      },
+      {
+        start: 17.5,
+        end: 19.5,
+        scene: 4,
+        probStep: 3,
+        text: '...and asking regular customers for money is <span class="highlight" style="color: #f87171;">socially awkward</span>.',
+        bg: { orb1: 0.1, orb2: 0.1, orb3: 0.6 }
+      },
+      {
+        start: 19.5,
+        end: 23.0,
+        scene: 5,
+        text: 'Meet <span class="highlight">BolKhata</span> — The voice-first ambient ledger.',
+        bg: { orb1: 0.5, orb2: 0.4, orb3: 0 }
+      }
+    ];
+
+    const scenes = {
+      1: document.getElementById('scene1'),
+      2: document.getElementById('scene2'),
+      3: document.getElementById('scene3'),
+      4: document.getElementById('scene4'),
+      5: document.getElementById('scene5')
+    };
+
+    const captionText = document.getElementById('caption-text');
+    const timePill = document.getElementById('time-pill');
+    const progressFill = document.getElementById('progress-fill');
+    const barKirana = document.getElementById('barKirana');
+    const barModern = document.getElementById('barModern');
+    const prob1 = document.getElementById('prob1');
+    const prob2 = document.getElementById('prob2');
+    const prob3 = document.getElementById('prob3');
+
+    let currentSceneNum = null;
+
+    function render(now) {
+      const elapsed = Math.min((now - startTime) / 1000, TOTAL_DURATION);
+      const progress = (elapsed / TOTAL_DURATION) * 100;
+      progressFill.style.width = progress + '%';
+
+      // Time pill
+      const sec = Math.floor(elapsed);
+      const cent = Math.floor((elapsed % 1) * 100);
+      timePill.textContent = `00:${sec < 10 ? '0' : ''}${sec}.${cent < 10 ? '0' : ''}${cent}`;
+
+      // Find active script segment
+      const segment = scriptTracks.find(t => elapsed >= t.start && elapsed < t.end) || scriptTracks[scriptTracks.length - 1];
+
+      if (segment) {
+        captionText.innerHTML = segment.text;
+
+        // Scene switching
+        if (currentSceneNum !== segment.scene) {
+          Object.keys(scenes).forEach(k => {
+            if (parseInt(k) === segment.scene) {
+              scenes[k].classList.add('active');
+              scenes[k].classList.remove('exit');
+            } else if (scenes[k].classList.contains('active')) {
+              scenes[k].classList.remove('active');
+              scenes[k].classList.add('exit');
+            }
+          });
+          currentSceneNum = segment.scene;
+        }
+
+        // Special triggers per scene
+        if (segment.scene === 2) {
+          barKirana.style.width = '90%';
+          barModern.style.width = '10%';
+        }
+
+        if (segment.scene === 4) {
+          if (segment.probStep >= 1) prob1.classList.add('visible');
+          if (segment.probStep >= 2) prob2.classList.add('visible');
+          if (segment.probStep >= 3) prob3.classList.add('visible');
+        }
+      }
+
+      if (elapsed < TOTAL_DURATION) {
+        requestAnimationFrame(render);
+      }
+    }
+
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>
+
