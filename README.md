@@ -36,8 +36,9 @@ Millions of Indian Kirana (neighbourhood grocery) owners track customer credit (
 
 | Asset | File | Description |
 | --- | --- | --- |
-| 🎬 **Demo Video** | [`BolKhata_Demo_Video.webm`](file:///d:/Gnani/BolKhata_Demo_Video.webm) | Full 1m 45s recorded mobile walkthrough covering all 6 scenes |
-| 🌐 **Interactive Video Player** | [`play_video.html`](file:///d:/Gnani/play_video.html) | Native browser video player with scene jump buttons (opens in Chrome/Edge) |
+| ✨ **23s Animated Intro Video** | [`BolKhata_Intro_23s.webm`](file:///d:/Gnani/BolKhata_Intro_23s.webm) | 1080p motion graphics video visualizing the 13M Kiranas, 90% dominance, 60% udhaar, and notebook friction |
+| 🎬 **App Walkthrough Video** | [`BolKhata_Demo_Video.webm`](file:///d:/Gnani/BolKhata_Demo_Video.webm) | Full 1m 45s recorded mobile walkthrough covering Loops A, B, C, Instant Undo, and Bilingual modes |
+| 🌐 **Interactive Video Player** | [`play_video.html`](file:///d:/Gnani/play_video.html) | Dual-tab browser video player with scene jump buttons (opens in Chrome/Edge) |
 | 🎙️ **ElevenLabs Voiceover Script** | [`ELEVENLABS_VOICEOVER_SCRIPT.md`](file:///d:/Gnani/ELEVENLABS_VOICEOVER_SCRIPT.md) | Synchronized voiceover script with recommended ElevenLabs voice settings and copy-paste text |
 | 📄 **1-Page Solution Pitch** | [`SOLUTION_PITCH.md`](file:///d:/Gnani/SOLUTION_PITCH.md) | High-impact 1-page executive pitch explaining the Kirana problem, voice loops, and metrics |
 | 📋 **Demo Guide** | [`DEMO_GUIDE.md`](file:///d:/Gnani/DEMO_GUIDE.md) | Complete 2–3 minute live or recorded demonstration playbook |
