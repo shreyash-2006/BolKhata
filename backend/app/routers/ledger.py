@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select, desc
@@ -22,6 +22,20 @@ def build_customer_response(c: Customer, entries: List[LedgerEntry], today_str: 
         active_entries.sort(key=lambda x: x.date, reverse=True)
         last_tx_date = active_entries[0].date
 
+    # Due dates check
+    today_dt = datetime.strptime(today_str, "%Y-%m-%d").date()
+    week_end = (today_dt + timedelta(days=7)).strftime("%Y-%m-%d")
+
+    active_credits_with_due = [
+        e for e in active_entries if e.type == "credit" and e.due_date
+    ]
+
+    is_due_today = any(e.due_date == today_str for e in active_credits_with_due)
+    is_due_this_week = any(today_str <= e.due_date <= week_end for e in active_credits_with_due)
+    
+    future_dues = [e.due_date for e in active_credits_with_due if e.due_date >= today_str]
+    next_due_date = min(future_dues) if future_dues else None
+
     return CustomerResponse(
         id=c.id,
         shop_id=c.shop_id,
@@ -32,6 +46,9 @@ def build_customer_response(c: Customer, entries: List[LedgerEntry], today_str: 
         balance=balance,
         overdue_amount=overdue_amt,
         is_overdue=is_overdue,
+        next_due_date=next_due_date,
+        is_due_today=is_due_today,
+        is_due_this_week=is_due_this_week,
         last_transaction_date=last_tx_date,
         created_at=c.created_at
     )
@@ -65,7 +82,6 @@ def get_ledger_summary(session: Session = Depends(get_session)):
 
     # Today & Week checks
     today_dt = ledger.get_today_date()
-    from datetime import timedelta
     week_end = today_dt + timedelta(days=7)
 
     for e in entries:
@@ -237,4 +253,3 @@ def undo_last_entry(session: Session = Depends(get_session)):
         transcript=last_entry.transcript,
         created_at=last_entry.created_at
     )
-

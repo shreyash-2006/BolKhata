@@ -38,6 +38,9 @@ class CustomerResponse(BaseModel):
     balance: float
     overdue_amount: float
     is_overdue: bool
+    next_due_date: Optional[str] = None
+    is_due_today: bool = False
+    is_due_this_week: bool = False
     last_transaction_date: Optional[str] = None
     created_at: datetime
 
@@ -123,4 +126,3 @@ class VoiceEnrollResponse(BaseModel):
     success: bool
     enrolled: bool
     message: str
-

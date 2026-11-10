@@ -8,6 +8,7 @@ import { CustomerDetail } from './components/CustomerDetail';
 import { VoiceModal } from './components/VoiceModal';
 import { ReminderModal } from './components/ReminderModal';
 import { VoiceEnrollModal } from './components/VoiceEnrollModal';
+import { ShopSettingsModal } from './components/ShopSettingsModal';
 import { Mic, CheckCircle } from 'lucide-react';
 import { t } from './utils/translations';
 
@@ -27,6 +28,7 @@ export function App() {
   const [isReminderOpen, setIsReminderOpen] = useState(false);
   const [reminderTarget, setReminderTarget] = useState<Customer | null>(null);
   const [isVoiceEnrollOpen, setIsVoiceEnrollOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Undo notification state
   const [undoToast, setUndoToast] = useState<string | null>(null);
@@ -118,6 +120,7 @@ export function App() {
         onToggleLang={() => setLang(lang === 'hi' ? 'en' : 'hi')}
         onUndo={handleUndo}
         onOpenVoiceClone={() => setIsVoiceEnrollOpen(true)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
         undoDisabled={false}
       />
 
@@ -205,6 +208,16 @@ export function App() {
         lang={lang}
         onEnrolled={() => {
           loadInitialData();
+        }}
+      />
+
+      <ShopSettingsModal
+        shop={shop}
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        lang={lang}
+        onShopUpdated={(updated) => {
+          setShop(updated);
         }}
       />
     </div>

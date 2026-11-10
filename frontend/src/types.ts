@@ -1,4 +1,5 @@
 export type Language = 'hi' | 'en';
+export type DashboardTab = 'all' | 'overdue' | 'today' | 'week';
 
 export interface Shop {
   id: number;
@@ -7,6 +8,13 @@ export interface Shop {
   owner_phone?: string;
   language: string;
   voice_clone_enrolled: boolean;
+}
+
+export interface ShopUpdate {
+  name?: string;
+  owner_name?: string;
+  owner_phone?: string;
+  language?: string;
 }
 
 export interface Customer {
@@ -19,6 +27,9 @@ export interface Customer {
   balance: number;
   overdue_amount: number;
   is_overdue: boolean;
+  next_due_date?: string;
+  is_due_today?: boolean;
+  is_due_this_week?: boolean;
   last_transaction_date?: string;
   created_at: string;
 }
@@ -70,4 +81,3 @@ export interface ReminderDraft {
   draft_text: string;
   days_overdue: number;
 }
-

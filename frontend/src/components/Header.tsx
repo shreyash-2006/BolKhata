@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Shop, Language } from '../types';
 import { t } from '../utils/translations';
-import { RotateCcw, Mic, Volume2 } from 'lucide-react';
+import { RotateCcw, Mic, Volume2, Settings } from 'lucide-react';
 
 interface HeaderProps {
   shop: Shop | null;
@@ -9,6 +9,7 @@ interface HeaderProps {
   onToggleLang: () => void;
   onUndo: () => void;
   onOpenVoiceClone: () => void;
+  onOpenSettings: () => void;
   undoDisabled: boolean;
 }
 
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleLang,
   onUndo,
   onOpenVoiceClone,
+  onOpenSettings,
   undoDisabled,
 }) => {
   const strings = t(lang);
@@ -25,14 +27,21 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="bg-slate-900 text-white shadow-md sticky top-0 z-30">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center font-black text-xl shadow-inner tracking-wider">
+        <div
+          onClick={onOpenSettings}
+          className="flex items-center space-x-2 cursor-pointer group"
+          title="Click to edit shop settings"
+        >
+          <div className="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center font-black text-xl shadow-inner tracking-wider group-hover:scale-105 transition-transform">
             ब
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight tracking-tight">
-              {shop?.name || strings.appName}
-            </h1>
+            <div className="flex items-center gap-1.5">
+              <h1 className="font-bold text-lg leading-tight tracking-tight group-hover:text-orange-300 transition-colors">
+                {shop?.name || strings.appName}
+              </h1>
+              <Settings className="w-3.5 h-3.5 text-slate-400 opacity-60 group-hover:opacity-100" />
+            </div>
             <p className="text-xs text-orange-400 font-medium">
               {strings.tagline}
             </p>

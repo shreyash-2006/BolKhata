@@ -1,5 +1,6 @@
 import type {
   Shop,
+  ShopUpdate,
   Customer,
   LedgerSummary,
   LedgerEntry,
@@ -13,6 +14,16 @@ const BASE_URL = '/api';
 export async function getShop(): Promise<Shop> {
   const res = await fetch(`${BASE_URL}/shop`);
   if (!res.ok) throw new Error('Failed to fetch shop info');
+  return res.json();
+}
+
+export async function updateShop(data: ShopUpdate): Promise<Shop> {
+  const res = await fetch(`${BASE_URL}/shop`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to update shop info');
   return res.json();
 }
 

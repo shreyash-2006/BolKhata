@@ -39,3 +39,4 @@ Over **13 million neighbourhood Kirana stores** power 90% of India’s grocery r
 
 ### The 2-Minute Demo Impact
 A complete Kirana ledger lifecycle demonstrated in seconds: **Seeded Dashboard ➔ Hindi Voice Log ➔ 1-Tap Confirm ➔ Marathi/Hindi Voice Query ➔ Overdue Customer ➔ Cloned Voice Synthesis ➔ WhatsApp Share.**
+
